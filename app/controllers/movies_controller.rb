@@ -7,7 +7,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @all_ratings = Movie.pluck(:rating).uniq
+    @all_ratings =  Movie.pluck(:rating).uniq
     @selected_ratings = []
 
     unless params[:ratings].nil?
@@ -15,6 +15,10 @@ class MoviesController < ApplicationController
       keys.each do |key|
         @selected_ratings << key.to_s
       end
+    else
+       @all_ratings.each do |one_rating| 
+          @selected_ratings << one_rating
+       end
     end
 
     if params[:sort].nil?
