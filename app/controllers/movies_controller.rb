@@ -9,6 +9,7 @@ class MoviesController < ApplicationController
   def index
     @all_ratings =  Movie.pluck(:rating).uniq
     @selected_ratings = []
+    flash.keep
 
     unless params[:ratings].nil?
       session[:ratings] = params[:ratings]
@@ -47,7 +48,7 @@ class MoviesController < ApplicationController
     @movies
   end
 
-  def ne
+  def new
     # default: render 'new' template
   end
 
