@@ -7,6 +7,8 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = Movie.pluck(:rating).uniq
+
     if params[:sort].nil?
       @movies = Movie.all
     else
