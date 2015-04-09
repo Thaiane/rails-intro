@@ -8,9 +8,13 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.pluck(:rating).uniq
+    @selected_ratings = []
+    @selected_ratings << "G"
+
+    @ratings = params[:ratings]
 
     if params[:sort].nil?
-      @movies = Movie.all
+      @movies = Movie.where(rating: "G")
     else
       sort = params[:sort]
       if sort == "title"
