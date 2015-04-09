@@ -9,22 +9,26 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.pluck(:rating).uniq
     @selected_ratings = []
-    @selected_ratings << "G"
 
-    @ratings = params[:ratings]
+    unless params[:ratings].nil?
+      keys = params[:ratings].keys
+      keys.each do |key|
+        @selected_ratings << key.to_s
+      end
+    end
 
     if params[:sort].nil?
-      @movies = Movie.where(rating: "G")
+      @movies = Movie.where(rating: @selected_ratings)
     else
       sort = params[:sort]
       if sort == "title"
-        @movies = Movie.all.sort_by(&:title)
+        @movies = Movie.where(rating: @selected_ratings).sort_by(&:title)
         @title_header = "hilite"
       elsif sort == "release_date"
         @release_header = "hilite"
-        @movies = Movie.all.sort_by(&:release_date)
+        @movies = Movie.where(rating: @selected_ratings).sort_by(&:release_date)
       else
-        @movies = Movie.all
+        @movies = Movie.where(rating: @selected_ratings)
       end
     end
 
