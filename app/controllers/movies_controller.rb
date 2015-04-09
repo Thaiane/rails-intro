@@ -11,13 +11,21 @@ class MoviesController < ApplicationController
     @selected_ratings = []
 
     unless params[:ratings].nil?
+      session[:ratings] = params[:ratings]
       keys = params[:ratings].keys
       keys.each do |key|
         @selected_ratings << key.to_s
       end
     else
-       @all_ratings.each do |one_rating| 
-          @selected_ratings << one_rating
+      if session[:ratings].nil?
+         @all_ratings.each do |one_rating| 
+            @selected_ratings << one_rating
+         end
+       else
+        keys = session[:ratings].keys
+        keys.each do |key|
+          @selected_ratings << key.to_s
+        end
        end
     end
 
