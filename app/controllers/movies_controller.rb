@@ -30,21 +30,30 @@ class MoviesController < ApplicationController
        end
     end
 
-    if params[:sort].nil?
-      @movies = Movie.where(rating: @selected_ratings)
+    if params[:sort].nil? #Sem requisicao de filtro
+      if session[:header].nil? # sem filtro salvo
+        @movies = Movie.where(rating: @selected_ratings)
+      else
+        redirect_to movies_path(:sort => session[:header] )
+        #if session[:header] == "title"
+         # redirect_to movies_path(:sort => "title")
+          #@movies = Movie.where(rating: @selected_ratings).sort_by(&:title)   
+        #else
+         # @movies = Movie.where(rating: @selected_ratings).sort_by(&:release_date)
+        #end
+      end
     else
       sort = params[:sort]
       if sort == "title"
         @movies = Movie.where(rating: @selected_ratings).sort_by(&:title)
         @title_header = "hilite"
-      elsif sort == "release_date"
+        session[:header] = "title"
+      else
         @release_header = "hilite"
         @movies = Movie.where(rating: @selected_ratings).sort_by(&:release_date)
-      else
-        @movies = Movie.where(rating: @selected_ratings)
+        session[:header] = "release"
       end
     end
-
     @movies
   end
 
