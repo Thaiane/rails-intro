@@ -34,7 +34,7 @@ class MoviesController < ApplicationController
       if session[:header].nil? # sem filtro salvo
         @movies = Movie.where(rating: @selected_ratings)
       else
-        redirect_to movies_path(:sort => session[:header] )
+        redirect_to movies_path(:sort => session[:header], :rating => @selected_ratings)
         #if session[:header] == "title"
          # redirect_to movies_path(:sort => "title")
           #@movies = Movie.where(rating: @selected_ratings).sort_by(&:title)   
